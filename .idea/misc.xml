@@ -3,10 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_bluetooth.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4171195652173913" />
-        <entry key="app/src/main/res/layout/bluetooth_error.xml" value="0.43666666666666665" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.5619791666666667" />
+        <entry key="app/src/main/res/layout/activity_bluetooth.xml" value="0.14628623188405798" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.53125" />
       </map>
     </option>
   </component>
