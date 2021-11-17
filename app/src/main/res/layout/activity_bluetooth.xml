@@ -37,7 +37,6 @@
             android:text="Find New Device" />
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="423dp"
@@ -53,40 +52,63 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.235" />
 
-    <TextView
-        android:id="@+id/paired_devices"
+    <LinearLayout
+        android:id="@+id/paired_device_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Paired Devices:"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="13dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toTopOf="@id/available_device_layout"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/button_layout">
 
-    <ListView
-        android:id="@+id/pairedDeviceList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/paired_devices" />
+        <TextView
+            android:id="@+id/paired_devices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/paired_devices"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/available_devices"
+        <ListView
+            android:id="@+id/pairedDeviceList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/available_device_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Available Devices:"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pairedDeviceList" />
+        app:layout_constraintTop_toBottomOf="@id/paired_device_layout">
 
-    <ListView
-        android:id="@+id/availableDeviceList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/available_devices"/>
+        <TextView
+            android:id="@+id/available_devices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/available_devices"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/availableDeviceList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
