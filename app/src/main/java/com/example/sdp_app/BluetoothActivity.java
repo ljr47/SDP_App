@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
@@ -48,6 +49,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mAvailableDevicesListView;
+    private BluetoothDevice deviceToPair;
 
     private Handler mHandler; // Our main handler that will receive callback notifications
 //    private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
@@ -61,6 +63,8 @@ public class BluetoothActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
+
+        final ApplicationEx globalVar = (ApplicationEx) getApplicationContext();
 
         TextView textView2 = (TextView) findViewById(R.id.textView2);
         TextView pairedDevices = (TextView) findViewById(R.id.paired_devices);
@@ -159,6 +163,7 @@ public class BluetoothActivity extends AppCompatActivity {
                             mBTArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                             mBTArrayAdapter.notifyDataSetChanged();
 
+
 //                            String deviceName = device.getName();
 //                            String deviceMACAddress = device.getAddress(); // MAC address
 //                            list2.add("Name: " + deviceName + "\nMAC Address: " + deviceMACAddress);
@@ -198,14 +203,29 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         });
 
-//        lstView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lstView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String[] btDevice = ((String) ((TextView) view).getText()).split(": |\n");
+                String btName = btDevice[1];
+                String btMAC = btDevice[3];
+
+                globalVar.setBtDeviceName(btName);
+                globalVar.setBtDeviceMACAddress(btMAC);
+            }
+        });
+
+//        mAvailableDevicesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if(((ApplicationEx)getApplication()).writeBt("Hello World\n".getBytes(StandardCharsets.UTF_8))){
-//                    Toast.makeText(getApplicationContext(), "OK, sent", Toast.LENGTH_SHORT).show();
-//                }
-////                 ArrayList list = (ArrayList) parent.getAdapter().getItem(position);
+//                String[] btDevice = ((String) ((TextView) view).getText()).split(": |\n");
+//                String btName = btDevice[1];
+//                String btMAC = btDevice[3];
 //
+////                pairDevice(device);
+//
+//                globalVar.setBtDeviceName(btName);
+//                globalVar.setBtDeviceMACAddress(btMAC);
 //            }
 //        });
     }
@@ -228,6 +248,15 @@ public class BluetoothActivity extends AppCompatActivity {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
         } else {
             checkPermission();
+        }
+    }
+
+    private void pairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("createBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

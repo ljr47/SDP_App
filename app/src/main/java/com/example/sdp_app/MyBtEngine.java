@@ -15,7 +15,7 @@ public class MyBtEngine {
     static final int BT_STATE_CONNECTED = 2;
     //uid for all 3rd party devices (not android)
     private static final UUID UUID_BT_DEVICE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final String BT_DEVICE_MAC = "94:B9:7E:E6:69:16";//put your device MAC !!!!
+    public String BT_DEVICE_MAC;//put your device MAC !!!!
 
     private BtWaitConnThread   mWaitConnThread    = null;
     private BtWorkThread       mWorkThread        = null;
@@ -26,10 +26,11 @@ public class MyBtEngine {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState   =  BT_STATE_NONE;
     }
-    synchronized void start(){
+    synchronized void start(String macAddress){
         if(mAdapter == null){  return; }
         BluetoothDevice device;
         try{
+            BT_DEVICE_MAC = macAddress;
             device = mAdapter.getRemoteDevice(BT_DEVICE_MAC);
         }
         catch (Exception e){  return; }
@@ -140,5 +141,8 @@ public class MyBtEngine {
                 mmSocket.close();
             } catch (IOException e) { }
         }
+    }
+
+    private void start() {
     }
 }
