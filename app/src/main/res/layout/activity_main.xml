@@ -7,15 +7,27 @@
     tools:context=".MainActivity"
     android:id="@+id/myConstraintLayout">
 
+<!--    <Button-->
+<!--        android:id="@+id/button_connect"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:inputType="textCapSentences"-->
+<!--        android:onClick="openBluetooth"-->
+<!--        android:text="@string/connect_bluetooth"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     <Button
-        android:id="@+id/button_connect"
+        android:id="@+id/button_connectLE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:inputType="textCapSentences"
-        android:onClick="openBluetooth"
-        android:text="@string/connect_bluetooth"
+        android:onClick="openBluetoothLE"
+        android:text="@string/connect_bluetoothLE"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bluetooth_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_connect">
+        app:layout_constraintTop_toBottomOf="@id/button_connectLE">
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,7 +104,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_connect" />
+        app:layout_constraintTop_toBottomOf="@+id/button_connectLE" />
 
 
     <Button

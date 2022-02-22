@@ -50,4 +50,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, BluetoothActivity.class);
         startActivity(intent);
     }
+
+    public void openBluetoothLE(View view) {
+        Intent intent = new Intent(MainActivity.this, BluetoothLEActivity.class);
+        startActivity(intent);
+    }
 }
