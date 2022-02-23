@@ -3,6 +3,7 @@ package com.example.sdp_app;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +17,21 @@ import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
+    private Button connectBTLE, startCommand, endCommand;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        connectBTLE = findViewById(R.id.button_connect_ble);
+        startCommand = findViewById(R.id.button_start);
+        endCommand = findViewById(R.id.button_end);
+
+        connectBTLE.setVisibility(View.INVISIBLE);
+
+
+//        getSupportFragmentManager().beginTransaction().add(R.id.terminalFrag, new TerminalFragment(), "terminal");
 
 //        Button btn = findViewById(R.id.button_send);
 //        btn.setOnClickListener(v -> {
@@ -40,18 +51,46 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
         final ApplicationEx globalVar = (ApplicationEx) getApplicationContext();
 
-        TextView deviceName = findViewById(R.id.device_name);
+//        TextView deviceName = findViewById(R.id.device_name);
         TextView deviceMAC = findViewById(R.id.device_mac);
-
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
-        Bundle args = new Bundle();
-        args.putString("device", globalVar.getBtDeviceMACAddress());
-        Fragment fragment = new TerminalFragment();
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment, new TerminalFragment(), "terminal");
-
-        deviceName.setText(globalVar.getBtDeviceName());
         deviceMAC.setText(globalVar.getBtDeviceMACAddress());
+
+        connectBTLE.setVisibility(View.VISIBLE);
+
+        connectBTLE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().addOnBackStackChangedListener(MainActivity.this);
+                Bundle args = new Bundle();
+                args.putString("device", globalVar.getBtDeviceMACAddress());
+                Fragment fragment = new TerminalFragment();
+                fragment.setArguments(args);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame_terminal, fragment);
+                ft.commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.terminalFrag, new TerminalFragment(), "terminal");
+
+//        deviceName.setText(globalVar.getBtDeviceName());
+            }
+        });
+
+        startCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String command = "*str*";
+                TerminalFragment fragment = (TerminalFragment) getSupportFragmentManager().findFragmentById(R.id.frame_terminal);
+                fragment.send(command);
+            }
+        });
+
+        endCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String command = "*end*";
+                TerminalFragment fragment = (TerminalFragment) getSupportFragmentManager().findFragmentById(R.id.frame_terminal);
+                fragment.send(command);
+            }
+        });
 
     }
 

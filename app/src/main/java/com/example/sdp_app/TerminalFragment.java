@@ -125,7 +125,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_terminal, container, false);
         receiveText = view.findViewById(R.id.receive_text);                          // TextView performance decreases with number of spans
-        receiveText.setTextColor(getResources().getColor(R.color.purple_700)); // set as default color to reduce number of spans
+        receiveText.setTextColor(getResources().getColor(R.color.purple_200)); // set as default color to reduce number of spans
         receiveText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         sendText = view.findViewById(R.id.send_text);
@@ -196,7 +196,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         service.disconnect();
     }
 
-    private void send(String str) {
+    public void send(String str) {
         if(connected != Connected.True) {
             Toast.makeText(getActivity(), "not connected", Toast.LENGTH_SHORT).show();
             return;
@@ -215,7 +215,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 data = (str + newline).getBytes();
             }
             SpannableStringBuilder spn = new SpannableStringBuilder(msg + '\n');
-            spn.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.teal_700)), 0, spn.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spn.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.neon_green)), 0, spn.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             receiveText.append(spn);
             service.write(data);
         } catch (Exception e) {

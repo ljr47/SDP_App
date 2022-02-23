@@ -5,6 +5,7 @@
     <string name="paired_devices"><u>Paired Devices:</u></string>
     <string name="connect_bluetooth">Connect Bluetooth</string>
     <string name="connect_bluetoothLE">Connect Bluetooth LE</string>
+    <string name="get_device_mac">Get MAC Address</string>
     <string name="scan_qr_code">Scan QR Code</string>
     <string name="qr_found">QR Code Found</string>
     <string name="connect_ble">Connect Bluetooth LE</string>

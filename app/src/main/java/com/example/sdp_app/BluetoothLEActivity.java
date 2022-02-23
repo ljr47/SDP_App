@@ -56,7 +56,7 @@ public class BluetoothLEActivity extends AppCompatActivity {
         qrScanButton = findViewById(R.id.button_qrCodeScan);
         qrCodeFoundButton = findViewById(R.id.button_qrCodeFound);
         macAddress = findViewById(R.id.bluetoothLE_mac);
-        connectButton = findViewById(R.id.button_connect_ble);
+//        connectButton = findViewById(R.id.button_connect_ble);
 
         qrCodeFoundButton.setVisibility(View.GONE);
         previewView.setVisibility(View.GONE);
