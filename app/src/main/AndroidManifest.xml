@@ -31,21 +31,26 @@
 <!--    <permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 <!--    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--    <uses-permission android:name="android.permission.BLUETOOTH" />-->
+<!--    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
-    <permission android:name="android.permission.BLUETOOTH" android:label="BLUETOOTH" />
-    <permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--    <permission android:name="android.permission.BLUETOOTH" android:label="BLUETOOTH" />-->
+<!--    <permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
+<!--    <permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+<!--    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".ApplicationEx"
@@ -57,10 +62,10 @@
         android:theme="@style/Theme.SDP_App">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="DT12 UVC Smart Disinfectant">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

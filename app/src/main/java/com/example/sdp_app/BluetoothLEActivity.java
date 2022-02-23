@@ -10,10 +10,16 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Size;
@@ -32,9 +38,11 @@ public class BluetoothLEActivity extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
     private PreviewView previewView;
-    private Button qrScanButton, qrCodeFoundButton;
+    private Button qrScanButton, qrCodeFoundButton, connectButton;
     private TextView macAddress;
     private String qrCode;
+
+    private BluetoothAdapter bluetoothAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +56,15 @@ public class BluetoothLEActivity extends AppCompatActivity {
         qrScanButton = findViewById(R.id.button_qrCodeScan);
         qrCodeFoundButton = findViewById(R.id.button_qrCodeFound);
         macAddress = findViewById(R.id.bluetoothLE_mac);
+        connectButton = findViewById(R.id.button_connect_ble);
 
         qrCodeFoundButton.setVisibility(View.GONE);
         previewView.setVisibility(View.GONE);
+
+        checkPermission();
+
+        if(this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         qrScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,9 +81,23 @@ public class BluetoothLEActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), qrCode, Toast.LENGTH_SHORT).show();
                 Log.i(MainActivity.class.getSimpleName(), "QR Code Found: " + qrCode);
                 macAddress.setText(qrCode);
+                globalVar.setBtDeviceMACAddress(qrCode);
             }
         });
 
+//        connectButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                globalVar.setBtDeviceMACAddress(qrCode);
+////                Bundle args = new Bundle();
+////                args.putString("device", macAddress.toString());
+////                Fragment fragment = new TerminalFragment();
+////                fragment.setArguments(args);
+////                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, fragment, "terminal-c").addToBackStack(null).commit();
+////                Intent intent = new Intent(v.getContext(), MainActivity.class);
+////                startActivity(intent);
+//            }
+//        });
     }
 
     private void requestCamera() {
@@ -139,5 +167,17 @@ public class BluetoothLEActivity extends AppCompatActivity {
         }));
 
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, imageAnalysis, preview);
+    }
+
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,}, 1);
+            }
+        }
     }
 }
