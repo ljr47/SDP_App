@@ -18,6 +18,7 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,14 +50,11 @@ public class BluetoothLEActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_le);
 
-        final  ApplicationEx globalVar = (ApplicationEx) getApplicationContext();
-
         // Set widgets
         previewView = findViewById(R.id.previewView_scanner);
         qrScanButton = findViewById(R.id.button_qrCodeScan);
         qrCodeFoundButton = findViewById(R.id.button_qrCodeFound);
         macAddress = findViewById(R.id.bluetoothLE_mac);
-//        connectButton = findViewById(R.id.button_connect_ble);
 
         qrCodeFoundButton.setVisibility(View.GONE);
         previewView.setVisibility(View.GONE);
@@ -80,24 +78,18 @@ public class BluetoothLEActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), qrCode, Toast.LENGTH_SHORT).show();
                 Log.i(MainActivity.class.getSimpleName(), "QR Code Found: " + qrCode);
+
                 macAddress.setText(qrCode);
-                globalVar.setBtDeviceMACAddress(qrCode);
+
+                SharedPreferences sharedPref = getSharedPreferences("mypref", 0);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("macAdd", qrCode);
+                editor.commit();
+
+                finish();
             }
         });
 
-//        connectButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                globalVar.setBtDeviceMACAddress(qrCode);
-////                Bundle args = new Bundle();
-////                args.putString("device", macAddress.toString());
-////                Fragment fragment = new TerminalFragment();
-////                fragment.setArguments(args);
-////                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, fragment, "terminal-c").addToBackStack(null).commit();
-////                Intent intent = new Intent(v.getContext(), MainActivity.class);
-////                startActivity(intent);
-//            }
-//        });
     }
 
     private void requestCamera() {

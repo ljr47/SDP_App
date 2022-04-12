@@ -14,6 +14,9 @@
     <string name="connected_device"><b><u>Connected Bluetooth Device:</u></b></string>
     <string name="device_name"><b>Name: </b></string>
     <string name="device_mac"><b>MAC Address: </b></string>
+    <string name="device_info"><b><u>Device Information:</u></b></string>
+    <string name="device_status">Status: </string>
+    <string name="device_fault">Fault: </string>
 
     <string name="location_permission_title">Location permission required</string>
     <string name="location_permission_message">This app does not use location information, but scanning for Bluetooth LE devices requires this permission</string>
@@ -21,4 +24,27 @@
     <string name="location_denied_title">Location permission denied</string>
     <string name="location_denied_message">As location permission has not been granted, this app cannot scan for Bluetooth LE devices.</string>
     <string name="pairing_request">PAIRING requested\n-> Perform pairing steps. Connect again</string>
+
+    // State Strings
+    <string name="sINT">Initializing</string>
+    <string name="sODR">Door is Open</string>
+    <string name="sWOB">Waiting for Object</string>
+    <string name="sCRY">Chamber is Ready</string>
+    <string name="sACE">Active Cycle</string>
+    <string name="sWRL">Waiting for Release</string>
+    <string name="sUNK">Unknown State</string>
+    <string name="sFLT">Fault State</string>
+
+    // Fault Strings
+    <string name="fUNK">Unknown Fault</string>
+    <string name="fESP">E-Stop Fault</string>
+    <string name="fDON">Door Open Fault</string>
+    <string name="fTMO">Timer Fault</string>
+    <string name="fBST">Invalid State Fault</string>
+    <string name="fSNS">Sensor Failure Fault</string>
+    <string name="fMOJ">Motor Jammed Fault</string>
+    <string name="fEED">Early End Fault</string>
+    <string name="fRLT">Release Timeout Fault</string>
+    <string name="fPDT">Person Detected</string>
+    <string name="fCLR">No Fault Detected</string>
 </resources>

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.Spannable;
@@ -21,12 +22,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class TerminalFragment extends Fragment implements ServiceConnection, SerialListener {
 
@@ -55,6 +60,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         setRetainInstance(true);
 
         deviceAddress = getArguments().getString("device");
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
@@ -139,42 +145,6 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         return view;
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_terminal, menu);
-//        menu.findItem(R.id.hex).setChecked(hexEnabled);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.clear) {
-//            receiveText.setText("");
-//            return true;
-//        } else if (id == R.id.newline) {
-//            String[] newlineNames = getResources().getStringArray(R.array.newline_names);
-//            String[] newlineValues = getResources().getStringArray(R.array.newline_values);
-//            int pos = java.util.Arrays.asList(newlineValues).indexOf(newline);
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//            builder.setTitle("Newline");
-//            builder.setSingleChoiceItems(newlineNames, pos, (dialog, item1) -> {
-//                newline = newlineValues[item1];
-//                dialog.dismiss();
-//            });
-//            builder.create().show();
-//            return true;
-//        } else if (id == R.id.hex) {
-//            hexEnabled = !hexEnabled;
-//            sendText.setText("");
-//            hexWatcher.enable(hexEnabled);
-//            sendText.setHint(hexEnabled ? "HEX mode" : "");
-//            item.setChecked(hexEnabled);
-//            return true;
-//        } else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
-
     /*
      * Serial + UI
      */
@@ -240,6 +210,109 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 pendingNewline = msg.charAt(msg.length() - 1) == '\r';
             }
             receiveText.append(TextUtil.toCaretString(msg, newline.length() != 0));
+            msg ="";
+        }
+
+        String msg = receiveText.getText().toString();
+        char tmp = msg.charAt(msg.length() - 1);
+
+        if (msg.charAt(msg.length() - 1) == '\n')
+        {
+            String message = msg.substring(msg.length() - 8);
+
+            TextView timerText = (TextView) getActivity().findViewById(R.id.cycle_timer);
+            CountDownTimer timer = new CountDownTimer(300000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    NumberFormat f = new DecimalFormat("00");
+                    long hour = (millisUntilFinished / 3600000) % 24;
+                    long min = (millisUntilFinished / 60000) % 60;
+                    long sec = (millisUntilFinished / 1000) % 60;
+                    timerText.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+                }
+                public void onFinish() {
+                    timerText.setText("00:00:00");
+                }
+            };
+
+            char startChar = message.charAt(0);
+            if (startChar == 's')
+            {
+                String code = message.substring(2,5);
+
+                TextView status = (TextView) getActivity().findViewById(R.id.device_status);
+
+                switch (code){
+                    case "INT":
+                        status.setText(getString(R.string.sINT));
+                        break;
+                    case "ODR":
+                        status.setText(getString(R.string.sODR));
+                        break;
+                    case "WOB":
+                        status.setText(getString(R.string.sWOB));
+                        break;
+                    case "CRY":
+                        status.setText(getString(R.string.sCRY));
+                        break;
+                    case "ACE":
+                        status.setText(getString(R.string.sACE));
+                        timerText.setVisibility(View.VISIBLE);
+                        timer.start();
+                        break;
+                    case "WRL":
+                        status.setText(getString(R.string.sWRL));
+                        break;
+                    case "FLT":
+                        status.setText(getString(R.string.sFLT));
+                    default:
+                        status.setText("Not Connected");
+                        break;
+                }
+            }
+            else if (startChar == 'f')
+            {
+                String code = message.substring(2,5);
+
+                TextView fault = (TextView) getActivity().findViewById(R.id.device_fault);
+
+                switch (code){
+                    case "UNK":
+                        fault.setText(getString(R.string.fUNK));
+                        break;
+                    case "ESP":
+                        fault.setText(getString(R.string.fESP));
+                        break;
+                    case "DON":
+                        fault.setText(getString(R.string.fDON));
+                        break;
+                    case "TMO":
+                        fault.setText(getString(R.string.fTMO));
+                        break;
+                    case "BST":
+                        fault.setText(getString(R.string.fBST));
+                        break;
+                    case "SNS":
+                        fault.setText(getString(R.string.fSNS));
+                        break;
+                    case "MOJ":
+                        fault.setText(getString(R.string.fMOJ));
+                        break;
+                    case "EED":
+                        fault.setText(getString(R.string.fEED));
+                        timer.cancel();
+                        break;
+                    case "RLT":
+                        fault.setText(getString(R.string.fRLT));
+                        break;
+                    case "PDT":
+                        fault.setText(getString(R.string.fPDT));
+                        break;
+                    default:
+                        fault.setText(getString(R.string.fCLR));
+                        break;
+                }
+            }
+
         }
     }
 
